@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hat Again - Dots Edition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f0c20;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 440px;
+            height: 100vh;
+            max-height: 840px;
+            background: url('bg.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(42, 34, 78, 0.8), rgba(24, 20, 51, 0.9));
+            backdrop-filter: blur(8px);
+            padding: 10px 18px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 120px;
+            border: 1px solid rgba(160, 151, 209, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #c8bdf7;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffeaa7;
+            text-shadow: 0 2px 8px rgba(255, 234, 167, 0.3);
+        }
+
+        #board-wrapper {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            margin: auto;
+        }
+
+        canvas {
+            background: transparent;
+            display: block;
+            cursor: pointer;
+        }
+
+        .controls {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 260px;
+            text-align: center;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-quit {
+            background: rgba(255, 118, 117, 0.2);
+            border: 1px solid rgba(255, 118, 117, 0.5);
+            color: #ff7675;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 20px;
+            max-width: 130px;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-quit:hover {
+            background: rgba(255, 118, 117, 0.35);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+            box-shadow: 0 6px 20px rgba(9, 132, 227, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-leaderboard {
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+            box-shadow: 0 6px 20px rgba(225, 112, 85, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-achievements {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(24,20,51,0.95) 0%, rgba(10,8,22,0.98) 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo-container {
+            width: 130px;
+            height: 130px;
+            margin-bottom: 15px;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(116, 185, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #a097d1;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .achievements-grid {
+            width: 100%;
+            max-width: 360px;
+            max-height: 320px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .achievement-card {
+            background: rgba(25, 20, 50, 0.8);
+            border-radius: 10px;
+            padding: 8px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .achievement-card:active {
+            transform: scale(0.95);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .achievement-card img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+
+        .achievement-card span {
+            font-size: 11px;
+            color: #c8bdf7;
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Notificación emergente de Logro Desbloqueado */
+        #achievement-popup {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(162, 155, 254, 0.95));
+            border: 2px solid #ffeaa7;
+            border-radius: 16px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            width: 90%;
+            max-width: 360px;
+        }
+
+        #achievement-popup.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #popup-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .popup-text h4 {
+            font-size: 12px;
+            color: #ffeaa7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .popup-text p {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .leaderboard-list {
+            width: 100%;
+            max-width: 320px;
+            max-height: 260px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 15px;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: #ffeaa7;
+            width: 30px;
+            text-align: left;
+        }
+
+        .player-name {
+            flex-grow: 1;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .player-score {
+            font-weight: bold;
+            color: #74b9ff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <!-- Notificación emergente de logros -->
+    <div id="achievement-popup">
+        <img id="popup-img" src="" alt="Logro">
+        <div class="popup-text">
+            <h4>¡Nuevo Logro Desbloqueado!</h4>
+            <p id="popup-name">Personaje</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="stat-box">
+            <div class="stat-label">PUNTOS</div>
+            <div class="stat-value" id="score">0</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">TIEMPO</div>
+            <div class="stat-value" id="mode-val">30s</div>
+        </div>
+    </header>
+
+    <div id="board-wrapper">
+        <canvas id="gameCanvas" width="360" height="360"></canvas>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-quit" onclick="showMenu()">SALIR</button>
+    </div>
+
+    <!-- Pantalla de Inicio -->
+    <div class="overlay" id="start-screen">
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Logo" onerror="this.src='nuevoIcon2.png'">
+        </div>
+        <div class="title">HAT AGAIN</div>
+        <div class="subtitle">Conecta sombreros o cierra bucles en 30s</div>
+        
+        <div class="menu-buttons">
+            <button class="btn btn-secondary" onclick="startGame()" style="max-width: 240px;">JUGAR</button>
+            <button class="btn btn-achievements" onclick="showAchievements()" style="max-width: 240px;">LOGROS</button>
+            <button class="btn btn-leaderboard" onclick="showLeaderboard()" style="max-width: 240px;">CLASIFICACIÓN</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Logros / Personajes -->
+    <div class="overlay hidden" id="achievements-screen">
+        <div class="title" style="color: #a29bfe; font-size: 24px; margin-bottom: 5px;">LOGROS Y PERSONAJES</div>
+        <div class="subtitle" style="margin-bottom: 15px;" id="achievement-counter">Desbloqueados: 5 / 37</div>
+        
+        <div class="achievements-grid" id="achievements-container"></div>
+
+        <button class="btn btn-secondary" onclick="closeAchievements()" style="max-width: 200px;">VOLVER</button>
+    </div>
+
+    <!-- Pantalla de Clasificación -->
+    <div class="overlay hidden" id="leaderboard-screen">
+        <div class="title" style="color: #ffeaa7; font-size: 26px; margin-bottom: 5px;">CLASIFICACIÓN</div>
+        <div class="subtitle" style="margin-bottom: 15px;">Mejores Puntuaciones</div>
+        
+        <div class="leaderboard-list" id="leaderboard-container"></div>
+        <button class="btn btn-secondary" onclick="closeLeaderboard()" style="max-width: 200px;">VOLVER</button>
+    </div>
+
+    <!-- Pantalla Fin de Juego -->
+    <div class="overlay hidden" id="gameover-screen">
+        <div class="title" style="color: #ff7675; font-size: 32px; margin-bottom: 5px;">¡TIEMPO AGOTADO!</div>
+        <div class="subtitle" style="margin-bottom: 10px;">Puntuación Final</div>
+        <div style="font-size: 48px; font-weight: bold; color: #ffeaa7; margin-bottom: 15px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
+        
+        <div style="background: rgba(162, 155, 254, 0.15); border: 1px solid rgba(162, 155, 254, 0.4); padding: 10px 20px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; color: #d1cceb;" id="gameover-achievements-text">
+            🏆 Logros desbloqueados: 5 / 37
+        </div>
+        
+        <div class="menu-buttons">
+            <button class="btn btn-secondary" onclick="saveScorePrompt()" style="max-width: 240px;">GUARDAR RÉCORD</button>
+            <button class="btn btn-achievements" onclick="showAchievements()" style="max-width: 240px;">VER LOGROS</button>
+            <button class="btn btn-secondary" onclick="showMenu()" style="max-width: 240px; background: linear-gradient(135deg, #ff7675, #d63031);">MENÚ PRINCIPAL</button>
+        </div>
+    </div>
+</div>
+
+<audio id="bg-music" src="gameplaybigbang.ogg" loop></audio>
+
+<script>
+    const GRID_SIZE = 6;
+    const CELL_SIZE = 60;
+    const CANVAS_SIZE = 360;
+
+    const ALL_CHARACTERS = [
+        { id: 0, name: 'Goku', color: '#ff7675', src: 'img/goku.png', defaultUnlocked: true },
+        { id: 1, name: 'Batman', color: '#ffeaa7', src: 'img/batman.png', defaultUnlocked: true },
+        { id: 2, name: 'Doraemon', color: '#74b9ff', src: 'img/doraemon.png', defaultUnlocked: true },
+        { id: 3, name: 'Enigma', color: '#55efc4', src: 'img/enigma.png', defaultUnlocked: true },
+        { id: 4, name: 'Flash', color: '#fd79a8', src: 'img/flash.png', defaultUnlocked: true },
+        { id: 5, name: 'Arale', color: '#ff9ff3', src: 'img/arale.png', pointsReq: 30, loopsReq: 2 },
+        { id: 6, name: 'Asterix', color: '#feca57', src: 'img/asterix.png', pointsReq: 60, loopsReq: 4 },
+        { id: 7, name: 'Bender', color: '#54a0ff', src: 'img/bender.png', pointsReq: 90, loopsReq: 6 },
+        { id: 8, name: 'Calimero', color: '#ff6b6b', src: 'img/calimero.png', pointsReq: 120, loopsReq: 8 },
+        { id: 9, name: 'Capitan', color: '#48dbfb', src: 'img/capitan.png', pointsReq: 150, loopsReq: 10 },
+        { id: 10, name: 'Chaplin', color: '#10ac84', src: 'img/chaplin.png', pointsReq: 180, loopsReq: 12 },
+        { id: 11, name: 'Heisenberg', color: '#00d2d3', src: 'img/heisenberg.png', pointsReq: 210, loopsReq: 14 },
+        { id: 12, name: 'Hogan', color: '#ff9f43', src: 'img/hogan.png', pointsReq: 240, loopsReq: 16 },
+        { id: 13, name: 'Hojalata', color: '#c8d6e5', src: 'img/hojalata.png', pointsReq: 270, loopsReq: 18 },
+        { id: 14, name: 'Jones', color: '#ee5253', src: 'img/jones.png', pointsReq: 300, loopsReq: 20 },
+        { id: 15, name: 'Kaito', color: '#0abde3', src: 'img/kaito.png', pointsReq: 330, loopsReq: 22 },
+        { id: 16, name: 'Killbill', color: '#f368e0', src: 'img/killbill.png', pointsReq: 360, loopsReq: 24 },
+        { id: 17, name: 'Lincon', color: '#ff9f43', src: 'img/lincon.png', pointsReq: 400, loopsReq: 26 },
+        { id: 18, name: 'Lobezno', color: '#ee5253', src: 'img/lobezno.png', pointsReq: 440, loopsReq: 28 },
+        { id: 19, name: 'Loco', color: '#01a3a4', src: 'img/loco.png', pointsReq: 480, loopsReq: 30 },
+        { id: 20, name: 'Magneto', color: '#5f27cd', src: 'img/magneto.png', pointsReq: 520, loopsReq: 32 },
+        { id: 21, name: 'Mario', color: '#ff6b6b', src: 'img/mario.png', pointsReq: 560, loopsReq: 34 },
+        { id: 22, name: 'Mascara', color: '#1dd1a1', src: 'img/mascara.png', pointsReq: 600, loopsReq: 36 },
+        { id: 23, name: 'Megaman', color: '#2e86de', src: 'img/megaman.png', pointsReq: 650, loopsReq: 38 },
+        { id: 24, name: 'Mickey', color: '#ff9ff3', src: 'img/mickey.png', pointsReq: 700, loopsReq: 40 },
+        { id: 25, name: 'Musculman', color: '#ff6b6b', src: 'img/musculman.png', pointsReq: 750, loopsReq: 42 },
+        { id: 26, name: 'Naranja', color: '#ffa502', src: 'img/naranja.png', pointsReq: 800, loopsReq: 44 },
+        { id: 27, name: 'Osoyogi', color: '#70a1ff', src: 'img/osoyogi.png', pointsReq: 850, loopsReq: 46 },
+        { id: 28, name: 'Pato', color: '#fffa65', src: 'img/pato.png', pointsReq: 900, loopsReq: 48 },
+        { id: 29, name: 'Pitufo', color: '#74b9ff', src: 'img/pitufo.png', pointsReq: 950, loopsReq: 50 },
+        { id: 30, name: 'Pocoyo', color: '#0984e3', src: 'img/pocoyo.png', pointsReq: 1000, loopsReq: 52 },
+        { id: 31, name: 'Popeye', color: '#ff5252', src: 'img/popeye.png', pointsReq: 1100, loopsReq: 54 },
+        { id: 32, name: 'R2D2', color: '#a4b0be', src: 'img/r2d2.png', pointsReq: 1200, loopsReq: 56 },
+        { id: 33, name: 'Robinhood', color: '#218c74', src: 'img/robinhood.png', pointsReq: 1300, loopsReq: 58 },
+        { id: 34, name: 'Robocop', color: '#718093', src: 'img/robocop.png', pointsReq: 1400, loopsReq: 60 },
+        { id: 35, name: 'Vader', color: '#2f3542', src: 'img/vader.png', pointsReq: 1500, loopsReq: 62 },
+        { id: 36, name: 'Venger', color: '#8854d0', src: 'img/venger.png', pointsReq: 1600, loopsReq: 64 }
+    ];
+
+    function getUnlockedIds() {
+        let saved = localStorage.getItem('hat_again_unlocked');
+        if (saved) {
+            return JSON.parse(saved);
+        } else {
+            let defaults = ALL_CHARACTERS.filter(c => c.defaultUnlocked).map(c => c.id);
+            localStorage.setItem('hat_again_unlocked', JSON.stringify(defaults));
+            return defaults;
+        }
+    }
+
+    let popupTimeout = null;
+    function showAchievementPopup(char) {
+        let popup = document.getElementById('achievement-popup');
+        document.getElementById('popup-img').src = char.src;
+        document.getElementById('popup-name').innerText = char.name;
+        
+        popup.classList.add('show');
+        if (popupTimeout) clearTimeout(popupTimeout);
+        popupTimeout = setTimeout(() => {
+            popup.classList.remove('show');
+        }, 3500);
+    }
+
+    function unlockCharacter(char) {
+        let unlocked = getUnlockedIds();
+        if (!unlocked.includes(char.id)) {
+            unlocked.push(char.id);
+            localStorage.setItem('hat_again_unlocked', JSON.stringify(unlocked));
+            // Mostrar notificación flotante inmediata
+            showAchievementPopup(char);
+        }
+    }
+
+    function checkAchievements(currentScore, loopsCount) {
+        let unlocked = getUnlockedIds();
+        ALL_CHARACTERS.forEach(char => {
+            if (!unlocked.includes(char.id)) {
+                if (char.pointsReq && currentScore >= char.pointsReq) {
+                    unlockCharacter(char);
+                }
+            }
+        });
+
+        let totalLoops = parseInt(localStorage.getItem('hat_again_loops') || '0') + loopsCount;
+        localStorage.setItem('hat_again_loops', totalLoops);
+
+        ALL_CHARACTERS.forEach((char) => {
+            if (!getUnlockedIds().includes(char.id) && char.loopsReq && totalLoops >= char.loopsReq) {
+                unlockCharacter(char);
+            }
+        });
+    }
+
+    let ACTIVE_HAT_TYPES = [];
+
+    function setupActiveHats() {
+        let unlockedIds = getUnlockedIds();
+        let availableChars = ALL_CHARACTERS.filter(c => unlockedIds.includes(c.id));
+        availableChars.sort(() => Math.random() - 0.5);
+        ACTIVE_HAT_TYPES = availableChars.slice(0, 5).map((c, index) => ({
+            id: index,
+            realId: c.id,
+            name: c.name,
+            color: c.color,
+            src: c.src,
+            img: null
+        }));
+
+        ACTIVE_HAT_TYPES.forEach(hat => {
+            hat.img = new Image();
+            hat.img.src = hat.src;
+            hat.img.onload = () => draw();
+        });
+    }
+
+    function showAchievements() {
+        let unlocked = getUnlockedIds();
+        let container = document.getElementById('achievements-container');
+        container.innerHTML = '';
+
+        document.getElementById('achievement-counter').innerText = `Desbloqueados: ${unlocked.length} / ${ALL_CHARACTERS.length}`;
+
+        let totalLoops = parseInt(localStorage.getItem('hat_again_loops') || '0');
+
+        ALL_CHARACTERS.forEach(char => {
+            let isUnlocked = unlocked.includes(char.id);
+            let card = document.createElement('div');
+            card.className = `achievement-card ${isUnlocked ? '' : 'locked'}`;
+            card.innerHTML = `
+                <img src="${char.src}" alt="${char.name}">
+                <span>${char.name}</span>
+            `;
+
+            card.onclick = () => {
+                if (isUnlocked) {
+                    alert(`¡${char.name} ya está desbloqueado!`);
+                } else {
+                    let pNeeded = char.pointsReq ? char.pointsReq : 0;
+                    let lNeeded = char.loopsReq ? char.loopsReq : 0;
+                    alert(`🔒 ${char.name} está bloqueado.\n\nPara desbloquearlo necesitas:\n- Alcanzar ${pNeeded} puntos totales en una partida.\n- O cerrar ${lNeeded} bucles en total (Llevas ${totalLoops}).`);
+                }
+            };
+
+            container.appendChild(card);
+        });
+
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('gameover-screen').classList.add('hidden');
+        document.getElementById('achievements-screen').classList.remove('hidden');
+    }
+
+    function closeAchievements() {
+        document.getElementById('achievements-screen').classList.add('hidden');
+        if (isGameOver) {
+            document.getElementById('gameover-screen').classList.remove('hidden');
+        } else {
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+    }
+
+    let canvas = document.getElementById('gameCanvas');
+    let ctx = canvas.getContext('2d');
+    let bgMusic = document.getElementById('bg-music');
+
+    let grid = [];
+    let animGrid = [];
+    let particles = [];
+    let selectedChain = [];
+    let isDragging = false;
+    let isLoopClosed = false;
+    let score = 0;
+    let timeLeft = 30;
+    let timerInterval = null;
+    let isGameOver = false;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playPopSound() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+    }
+
+    function spawnParticles(r, c, color) {
+        let centerX = c * CELL_SIZE + CELL_SIZE / 2;
+        let centerY = r * CELL_SIZE + CELL_SIZE / 2;
+        
+        for (let i = 0; i < 10; i++) {
+            let angle = Math.random() * Math.PI * 2;
+            let speed = Math.random() * 4 + 2;
+            particles.push({
+                x: centerX,
+                y: centerY,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                alpha: 1.0,
+                color: color,
+                size: Math.random() * 4 + 3
+            });
+        }
+    }
+
+    function getScores() {
+        let scores = localStorage.getItem('hat_again_scores');
+        return scores ? JSON.parse(scores) : [
+            { name: "HatMaster", score: 450 },
+            { name: "Player1", score: 320 },
+            { name: "DotsPro", score: 210 }
+        ];
+    }
+
+    function saveScore(name, newScore) {
+        let scores = getScores();
+        scores.push({ name: name, score: newScore });
+        scores.sort((a, b) => b.score - a.score);
+        scores = scores.slice(0, 10);
+        localStorage.setItem('hat_again_scores', JSON.stringify(scores));
+    }
+
+    function showLeaderboard() {
+        let scores = getScores();
+        let container = document.getElementById('leaderboard-container');
+        container.innerHTML = '';
+        scores.forEach((item, index) => {
+            let row = document.createElement('div');
+            row.className = 'leaderboard-item';
+            row.innerHTML = `
+                <span class="rank">#${index + 1}</span>
+                <span class="player-name">${item.name}</span>
+                <span class="player-score">${item.score} pts</span>
+            `;
+            container.appendChild(row);
+        });
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('leaderboard-screen').classList.remove('hidden');
+    }
+
+    function closeLeaderboard() {
+        document.getElementById('leaderboard-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.remove('hidden');
+    }
+
+    function saveScorePrompt() {
+        let playerName = prompt("Introduce tu nombre:", "Jugador");
+        if (playerName) {
+            saveScore(playerName, score);
+            alert("¡Récord guardado!");
+            showLeaderboard();
+            document.getElementById('gameover-screen').classList.add('hidden');
+        }
+    }
+
+    function initGrid() {
+        grid = [];
+        animGrid = [];
+        particles = [];
+        for (let r = 0; r < GRID_SIZE; r++) {
+            grid[r] = [];
+            animGrid[r] = [];
+            for (let c = 0; c < GRID_SIZE; c++) {
+                grid[r][c] = getRandomHat();
+                animGrid[r][c] = { y: r * CELL_SIZE, velocity: 0 };
+            }
+        }
+    }
+
+    function getRandomHat() {
+        return ACTIVE_HAT_TYPES[Math.floor(Math.random() * ACTIVE_HAT_TYPES.length)];
+    }
+
+    function startGame() {
+        setupActiveHats();
+        score = 0;
+        timeLeft = 30;
+        isGameOver = false;
+        selectedChain = [];
+        isLoopClosed = false;
+
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('gameover-screen').classList.add('hidden');
+        document.getElementById('leaderboard-screen').classList.add('hidden');
+        document.getElementById('achievements-screen').classList.add('hidden');
+        document.getElementById('score').innerText = score;
+        document.getElementById('mode-val').innerText = timeLeft + 's';
+
+        if (bgMusic.paused) {
+            bgMusic.currentTime = 0;
+            bgMusic.play().catch(e => console.log("Audio play prevent:", e));
+        }
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('mode-val').innerText = timeLeft + 's';
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                document.getElementById('mode-val').innerText = '0s';
+                endGame();
+            }
+        }, 1000);
+
+        initGrid();
+        draw();
+    }
+
+    function showMenu() {
+        clearInterval(timerInterval);
+        bgMusic.pause();
+        document.getElementById('gameover-screen').classList.add('hidden');
+        document.getElementById('leaderboard-screen').classList.add('hidden');
+        document.getElementById('achievements-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.remove('hidden');
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+        if (selectedChain.length > 1) {
+            ctx.beginPath();
+            const hatColor = selectedChain[0].hat.color;
+            ctx.strokeStyle = isLoopClosed ? '#ffeaa7' : hatColor;
+            ctx.lineWidth = isLoopClosed ? 10 : 8;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            for (let i = 0; i < selectedChain.length; i++) {
+                let x = selectedChain[i].c * CELL_SIZE + CELL_SIZE / 2;
+                let y = animGrid[selectedChain[i].r][selectedChain[i].c].y + CELL_SIZE / 2;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        let animating = false;
+
+        for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                let hat = grid[r][c];
+                if (!hat) continue;
+
+                let anim = animGrid[r][c];
+                let targetY = r * CELL_SIZE;
+
+                if (Math.abs(anim.y - targetY) > 0.5 || Math.abs(anim.velocity) > 0.5) {
+                    let force = (targetY - anim.y) * 0.3;
+                    anim.velocity = (anim.velocity + force) * 0.7;
+                    anim.y += anim.velocity;
+                    animating = true;
+                } else {
+                    anim.y = targetY;
+                    anim.velocity = 0;
+                }
+
+                let x = c * CELL_SIZE;
+                let y = anim.y;
+                let isSelected = selectedChain.some(item => item.r === r && item.c === c);
+
+                if (isSelected) {
+                    ctx.fillStyle = isLoopClosed ? '#ffeaa7' : hat.color;
+                    ctx.beginPath();
+                    ctx.arc(x + CELL_SIZE/2, y + CELL_SIZE/2, CELL_SIZE / 2.4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                }
+
+                if (hat.img && hat.img.complete && hat.img.naturalWidth !== 0) {
+                    ctx.drawImage(hat.img, x + 4, y + 4, CELL_SIZE - 8, CELL_SIZE - 8);
+                }
+            }
+        }
+
+        if (particles.length > 0) {
+            animating = true;
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.03;
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+        }
+
+        if (animating) {
+            requestAnimationFrame(draw);
+        }
+    }
+
+    function getCellCoords(e) {
+        let rect = canvas.getBoundingClientRect();
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+
+        if (e.touches && e.touches.length > 0) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else if (e.changedTouches && e.changedTouches.length > 0) {
+            clientX = e.changedTouches[0].clientX;
+            clientY = e.changedTouches[0].clientY;
+        }
+
+        let x = clientX - rect.left;
+        let y = clientY - rect.top;
+
+        let c = Math.floor(x / CELL_SIZE);
+        let r = Math.floor(y / CELL_SIZE);
+
+        if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
+            return { r, c };
+        }
+        return null;
+    }
+
+    function handleStart(e) {
+        if (isGameOver) return;
+        let coords = getCellCoords(e);
+        if (coords && grid[coords.r][coords.c]) {
+            isDragging = true;
+            isLoopClosed = false;
+            selectedChain = [{ r: coords.r, c: coords.c, hat: grid[coords.r][coords.c] }];
+            draw();
+        }
+    }
+
+    function handleMove(e) {
+        if (!isDragging || isGameOver) return;
+        let coords = getCellCoords(e);
+        if (!coords) return;
+
+        let last = selectedChain[selectedChain.length - 1];
+        if (coords.r === last.r && coords.c === last.c) return;
+
+        let isAdjacent = Math.abs(coords.r - last.r) <= 1 && Math.abs(coords.c - last.c) <= 1;
+        let targetHat = grid[coords.r][coords.c];
+
+        if (isAdjacent && targetHat && targetHat.id === selectedChain[0].hat.id) {
+            if (selectedChain.length > 1 && 
+                selectedChain[selectedChain.length - 2].r === coords.r && 
+                selectedChain[selectedChain.length - 2].c === coords.c) {
+                selectedChain.pop();
+                isLoopClosed = false;
+                draw();
+                return;
+            }
+
+            let existingIndex = selectedChain.findIndex(item => item.r === coords.r && item.c === coords.c);
+            if (existingIndex !== -1 && selectedChain.length >= 3) {
+                selectedChain.push({ r: coords.r, c: coords.c, hat: targetHat });
+                isLoopClosed = true;
+                draw();
+                return;
+            }
+
+            if (!isLoopClosed) {
+                selectedChain.push({ r: coords.r, c: coords.c, hat: targetHat });
+                draw();
+            }
+        }
+    }
+
+    function handleEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+
+        if (selectedChain.length >= 2) {
+            playPopSound();
+
+            let hatTypeId = selectedChain[0].hat.id;
+            let hatColor = selectedChain[0].hat.color;
+            let toEliminate = new Set();
+            selectedChain.forEach(item => toEliminate.add(`${item.r},${item.c}`));
+
+            let expanded = new Set(toEliminate);
+            let loopsMade = 0;
+
+            if (isLoopClosed) {
+                loopsMade = 1;
+                for (let r = 0; r < GRID_SIZE; r++) {
+                    for (let c = 0; c < GRID_SIZE; c++) {
+                        if (grid[r][c] && grid[r][c].id === hatTypeId) {
+                            expanded.add(`${r},${c}`);
+                        }
+                    }
+                }
+
+                toEliminate.forEach(pos => {
+                    let [r, c] = pos.split(',').map(Number);
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            let nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                                if (grid[nr][nc]) expanded.add(`${nr},${nc}`);
+                            }
+                        }
+                    }
+                });
+            } else {
+                toEliminate.forEach(pos => {
+                    let [r, c] = pos.split(',').map(Number);
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            let nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
+                                if (grid[nr][nc] && grid[nr][nc].id === hatTypeId) {
+                                    expanded.add(`${nr},${nc}`);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            toEliminate = expanded;
+
+            score += toEliminate.size;
+            document.getElementById('score').innerText = score;
+
+            checkAchievements(score, loopsMade);
+
+            toEliminate.forEach(pos => {
+                let [r, c] = pos.split(',').map(Number);
+                let fColor = grid[r][c] ? grid[r][c].color : hatColor;
+                spawnParticles(r, c, fColor);
+                grid[r][c] = null;
+            });
+
+            applyGravity();
+        }
+
+        selectedChain = [];
+        isLoopClosed = false;
+        draw();
+    }
+
+    function applyGravity() {
+        for (let c = 0; c < GRID_SIZE; c++) {
+            let emptySlots = 0;
+            for (let r = GRID_SIZE - 1; r >= 0; r--) {
+                if (grid[r][c] === null) {
+                    emptySlots++;
+                } else if (emptySlots > 0) {
+                    let newRow = r + emptySlots;
+                    grid[newRow][c] = grid[r][c];
+                    animGrid[newRow][c].y = animGrid[r][c].y;
+                    grid[r][c] = null;
+                }
+            }
+            for (let r = 0; r < emptySlots; r++) {
+                grid[r][c] = getRandomHat();
+                animGrid[r][c].y = -((emptySlots - r) * CELL_SIZE);
+                animGrid[r][c].velocity = 0;
+            }
+        }
+        draw();
+    }
+
+    function endGame() {
+        isGameOver = true;
+        clearInterval(timerInterval);
+        bgMusic.pause();
+        document.getElementById('final-score').innerText = score;
+        
+        let unlockedCount = getUnlockedIds().length;
+        document.getElementById('gameover-achievements-text').innerText = `🏆 Logros desbloqueados: ${unlockedCount} / ${ALL_CHARACTERS.length}`;
+        
+        document.getElementById('gameover-screen').classList.remove('hidden');
+    }
+
+    canvas.addEventListener('mousedown', handleStart);
+    canvas.addEventListener('mousemove', handleMove);
+    canvas.addEventListener('mouseup', handleEnd);
+    canvas.addEventListener('mouseleave', handleEnd);
+
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleStart(e); }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, { passive: false });
+    canvas.addEventListener('touchend', (e) => { e.preventDefault(); handleEnd(e); }, { passive: false });
+
+    setupActiveHats();
+    initGrid();
+    draw();
+</script>
+</body>
+</html>
