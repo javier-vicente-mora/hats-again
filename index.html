@@ -186,7 +186,7 @@
             align-items: center;
         }
 
-        /* Se eleva el margen inferior para que los botones queden perfectamente visibles en la nube de la portada */
+        /* 1. Solución portada: Ajuste de flexbox y espaciado inferior seguro para móviles */
         #start-screen {
             position: absolute;
             top: 0;
@@ -201,7 +201,7 @@
             align-items: center;
             z-index: 10;
             border-radius: 16px;
-            padding: 20px 20px 80px 20px;
+            padding: 20px 20px 50px 20px;
             text-align: center;
         }
 
@@ -273,14 +273,14 @@
             margin-bottom: 6px;
         }
 
-        /* Cuadrícula de logros con soporte de scroll vertical nativo */
+        /* 2. Solución Scroll: Forzar pan-y y permitir eventos táctiles nativos en las listas */
         .achievements-grid {
             width: 100%;
             max-width: 360px;
-            max-height: 280px;
-            overflow-y: scroll;
+            max-height: 260px;
+            overflow-y: auto !important;
             -webkit-overflow-scrolling: touch;
-            touch-action: pan-y;
+            touch-action: pan-y !important;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
@@ -472,14 +472,14 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Lista de clasificación con scroll táctil fluido */
+        /* 2. Solución Scroll: Lista de clasificación con scroll táctil fluido */
         .leaderboard-list {
             width: 100%;
             max-width: 320px;
-            height: 280px;
-            overflow-y: scroll;
+            height: 260px;
+            overflow-y: scroll !important;
             -webkit-overflow-scrolling: touch;
-            touch-action: pan-y;
+            touch-action: pan-y !important;
             background: rgba(25, 20, 50, 0.75);
             backdrop-filter: blur(8px);
             border-radius: 12px;
@@ -1342,7 +1342,6 @@
         document.getElementById('gameover-screen').classList.remove('hidden');
     }
 
-    // Comprobar si hay algún overlay activo para permitir el desplazamiento táctil sin bloqueos del canvas
     function isOverlayVisible() {
         return !document.getElementById('start-screen').classList.contains('hidden') ||
                !document.getElementById('achievements-screen').classList.contains('hidden') ||
