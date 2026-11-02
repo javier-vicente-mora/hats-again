@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Hat Again - Dots Edition</title>
     <style>
+        @font-face {
+            font-family: 'Cardenio Modern';
+            src: url('fuentes/Cardenio Modern.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Cardenio Modern';
+            src: url('fuentes/Cardenio Modern Std.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Cardenio Modern';
+            src: url('fuentes/Cardenio Modern Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         * {
             box-sizing: border-box;
             user-select: none;
@@ -12,12 +31,12 @@
             touch-action: none;
             margin: 0;
             padding: 0;
+            font-family: 'Cardenio Modern', sans-serif;
         }
 
         body {
             background-color: #0f0c20;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,7 +49,7 @@
             max-width: 440px;
             height: 100vh;
             max-height: 840px;
-            background: url('bg.png') no-repeat center center;
+            background: url('img/background.PNG') no-repeat center center;
             background-size: cover;
             display: flex;
             flex-direction: column;
@@ -59,20 +78,21 @@
             min-width: 110px;
             border: 1px solid rgba(160, 151, 209, 0.3);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
         }
 
         .stat-label {
-            font-size: 9px;
+            font-size: 10px;
             color: #c8bdf7;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-bottom: 2px;
-            font-weight: 700;
+            font-weight: bold;
         }
 
         .stat-value {
             font-size: 20px;
-            font-weight: 900;
+            font-weight: bold;
             color: #ffeaa7;
             text-shadow: 0 2px 8px rgba(255, 234, 167, 0.3);
         }
@@ -82,8 +102,8 @@
             border: 1px solid rgba(255, 118, 117, 0.5);
             color: #ff7675;
             padding: 8px 14px;
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
             letter-spacing: 1px;
@@ -109,15 +129,15 @@
             cursor: pointer;
             width: 100%;
             height: 100%;
-            /* Renderizado suave sin forzar pixelación */
-            image-rendering: auto;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
 
         .btn {
             border: none;
             color: white;
             padding: 14px 28px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             border-radius: 14px;
             cursor: pointer;
@@ -157,16 +177,58 @@
             align-items: center;
         }
 
+        /* Pantalla de inicio con portada.png a pantalla completa */
+        #start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('portada.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 10;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* Botón de música arriba a la derecha en la portada */
+        .btn-music-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(42, 34, 78, 0.85);
+            border: 1px solid rgba(160, 151, 209, 0.4);
+            color: #ffeaa7;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: transform 0.1s;
+        }
+
+        .btn-music-toggle:active {
+            transform: scale(0.9);
+        }
+
+        /* Resto de overlays unificados */
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Fondo ajustado para usar la imagen img/background.PNG */
-            background: linear-gradient(180deg, rgba(15, 12, 32, 0.85) 0%, rgba(10, 8, 22, 0.92) 100%), url('img/background.PNG') no-repeat center center;
+            background: url('img/background.PNG') no-repeat center center;
             background-size: cover;
-            backdrop-filter: blur(6px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -178,31 +240,9 @@
             overflow-y: auto;
         }
 
-        .logo-container {
-            width: 110px;
-            height: 110px;
-            margin-bottom: 12px;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(116, 185, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-        }
-
         .title {
-            font-size: 26px;
-            font-weight: 900;
+            font-size: 28px;
+            font-weight: bold;
             color: #ffffff;
             margin-bottom: 4px;
             letter-spacing: 2px;
@@ -210,7 +250,7 @@
         }
 
         .subtitle {
-            font-size: 13px;
+            font-size: 14px;
             color: #a097d1;
             margin-bottom: 18px;
             font-weight: 500;
@@ -232,7 +272,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
             padding: 8px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(25, 20, 50, 0.75);
             backdrop-filter: blur(8px);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -269,7 +309,7 @@
         }
 
         .achievement-card span {
-            font-size: 10px;
+            font-size: 11px;
             color: #c8bdf7;
             text-align: center;
             width: 100%;
@@ -279,11 +319,10 @@
         }
 
         .achievement-card small {
-            font-size: 8px;
+            font-size: 9px;
             color: #ffeaa7;
         }
 
-        /* Modal para ver logro en grande */
         #achievement-modal {
             position: absolute;
             top: 0;
@@ -339,7 +378,7 @@
 
         .modal-title {
             font-size: 22px;
-            font-weight: 900;
+            font-weight: bold;
             color: #ffffff;
             margin-bottom: 5px;
             letter-spacing: 1px;
@@ -406,7 +445,7 @@
         }
 
         .new-badge span {
-            font-size: 9px;
+            font-size: 10px;
             color: #ffeaa7;
             margin-top: 2px;
         }
@@ -423,7 +462,7 @@
             height: 280px;
             overflow-y: scroll;
             touch-action: pan-y;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(25, 20, 50, 0.75);
             backdrop-filter: blur(8px);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -453,7 +492,7 @@
             align-items: center;
             padding: 10px 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .leaderboard-item:last-child {
@@ -499,17 +538,12 @@
     </header>
 
     <div id="board-wrapper">
-        <canvas id="gameCanvas" width="360" height="360"></canvas>
+        <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Pantalla de Inicio -->
-    <div class="overlay" id="start-screen">
-        <div class="logo-container">
-            <img src="img/logo.png" alt="Logo" onerror="this.src='nuevoIcon2.png'">
-        </div>
-        <div class="title">HAT AGAIN</div>
-        <div class="subtitle">Conecta sombreros o cierra bucles en 30s</div>
-        
+    <!-- Pantalla de Inicio con portada.png -->
+    <div id="start-screen">
+        <button class="btn-music-toggle" id="music-toggle-btn" onclick="toggleMusic()">🔊</button>
         <div class="menu-buttons">
             <button class="btn btn-secondary" onclick="startGame()" style="max-width: 240px;">JUGAR</button>
             <button class="btn btn-achievements" onclick="showAchievements()" style="max-width: 240px;">LOGROS</button>
@@ -519,7 +553,7 @@
 
     <!-- Pantalla de Logros / Personajes -->
     <div class="overlay hidden" id="achievements-screen">
-        <div class="title" style="color: #a29bfe; font-size: 22px; margin-bottom: 4px;">LOGROS Y PERSONAJES</div>
+        <div class="title" style="color: #010009; font-size: 24px; margin-bottom: 4px;">LOGROS</div>
         <div class="subtitle" style="margin-bottom: 12px;" id="achievement-counter">Desbloqueados: 5 / 37</div>
         
         <div class="achievements-grid" id="achievements-container"></div>
@@ -543,7 +577,7 @@
     <!-- Pantalla de Clasificación -->
     <div class="overlay hidden" id="leaderboard-screen">
         <img src="img/logros@4x.png" alt="Logros" class="header-icon">
-        <div class="title" style="color: #ffeaa7; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
+        <div class="title" style="color: #080600; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
         
         <div class="leaderboard-list" id="leaderboard-container">
             <div style="padding: 20px; color: #a097d1;">Cargando récords...</div>
@@ -555,9 +589,9 @@
     <div class="overlay hidden" id="gameover-screen">
         <div class="title" style="color: #ff7675; font-size: 28px; margin-bottom: 2px;">¡TIEMPO AGOTADO!</div>
         <div class="subtitle" style="margin-bottom: 6px;">Puntuación Final</div>
-        <div style="font-size: 42px; font-weight: bold; color: #ffeaa7; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
+        <div style="font-size: 42px; font-weight: bold; color: #000000; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
         
-        <div style="font-size: 12px; color: #c8bdf7; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;" id="gameover-achievements-title">
+        <div style="font-size: 13px; color: #c8bdf7; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;" id="gameover-achievements-title">
             <img src="img/logros@4x.png" alt="Logros" style="width: 18px; height: 18px; object-fit: contain;"> 
             Nuevos logros conseguidos en esta partida:
         </div>
@@ -572,6 +606,12 @@
 
 <audio id="bg-music" src="gameplaybigbang.ogg" loop></audio>
 
+<!-- Sonido de tiempo extra -->
+<audio id="time-sound" preload="auto">
+    <source src="sounds/activar_magia.ogg" type="audio/ogg">
+    <source src="sounds/activar_magia.wav" type="audio/wav">
+</audio>
+
 <script>
     const GRID_SIZE = 6;
     const CELL_SIZE = 60;
@@ -579,6 +619,20 @@
 
     const BIN_ID = '673d3284ad19ca34f8ce08e8'; 
     const DB_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+    let musicEnabled = true;
+
+    function toggleMusic() {
+        musicEnabled = !musicEnabled;
+        let btn = document.getElementById('music-toggle-btn');
+        if (musicEnabled) {
+            btn.innerText = '🔊';
+            bgMusic.play().catch(e => console.log("Play prevent:", e));
+        } else {
+            btn.innerText = '🔇';
+            bgMusic.pause();
+        }
+    }
 
     const ALL_CHARACTERS = [
         { id: 0, name: 'Goku', color: '#ff7675', src: 'img/goku.png', pointsReq: 0 },
@@ -738,15 +792,21 @@
     let canvas = document.getElementById('gameCanvas');
     let ctx = canvas.getContext('2d');
     
-    // Forzado de renderizado fluido y sin pixelado artificial
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = CANVAS_SIZE * dpr;
+    canvas.height = CANVAS_SIZE * dpr;
+    ctx.scale(dpr, dpr);
+    
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
     let bgMusic = document.getElementById('bg-music');
+    let timeSound = document.getElementById('time-sound');
 
     let grid = [];
     let animGrid = [];
     let particles = [];
+    let floatingTexts = [];
     let selectedChain = [];
     let isDragging = false;
     let isLoopClosed = false;
@@ -771,6 +831,13 @@
         osc.stop(audioCtx.currentTime + 0.15);
     }
 
+    function playTimeSound() {
+        if (timeSound) {
+            timeSound.currentTime = 0;
+            timeSound.play().catch(e => console.log("Audio play prevented:", e));
+        }
+    }
+
     function spawnParticles(r, c, color) {
         let centerX = c * CELL_SIZE + CELL_SIZE / 2;
         let centerY = r * CELL_SIZE + CELL_SIZE / 2;
@@ -788,6 +855,16 @@
                 size: Math.random() * 4 + 3
             });
         }
+    }
+
+    function spawnFloatingText(x, y, text) {
+        floatingTexts.push({
+            x: x,
+            y: y,
+            text: text,
+            alpha: 1.0,
+            vy: -0.7
+        });
     }
 
     async function getScores() {
@@ -868,6 +945,7 @@
         grid = [];
         animGrid = [];
         particles = [];
+        floatingTexts = [];
         for (let r = 0; r < GRID_SIZE; r++) {
             grid[r] = [];
             animGrid[r] = [];
@@ -898,7 +976,7 @@
         document.getElementById('score').innerText = score;
         document.getElementById('mode-val').innerText = timeLeft + 's';
 
-        if (bgMusic.paused) {
+        if (musicEnabled && bgMusic.paused) {
             bgMusic.currentTime = 0;
             bgMusic.play().catch(e => console.log("Audio play prevent:", e));
         }
@@ -920,7 +998,7 @@
 
     function showMenu() {
         clearInterval(timerInterval);
-        bgMusic.pause();
+        if (musicEnabled) bgMusic.pause();
         document.getElementById('gameover-screen').classList.add('hidden');
         document.getElementById('leaderboard-screen').classList.add('hidden');
         document.getElementById('achievements-screen').classList.add('hidden');
@@ -1004,6 +1082,30 @@
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.restore();
+                }
+            }
+        }
+
+        if (floatingTexts.length > 0) {
+            animating = true;
+            for (let i = floatingTexts.length - 1; i >= 0; i--) {
+                let ft = floatingTexts[i];
+                ft.y += ft.vy;
+                ft.alpha -= 0.008;
+
+                if (ft.alpha <= 0) {
+                    floatingTexts.splice(i, 1);
+                } else {
+                    ctx.save();
+                    ctx.globalAlpha = ft.alpha;
+                    ctx.font = 'bold 26px "Cardenio Modern", sans-serif';
+                    ctx.fillStyle = '#55efc4';
+                    ctx.strokeStyle = '#10ac84';
+                    ctx.lineWidth = 4;
+                    ctx.textAlign = 'center';
+                    ctx.strokeText(ft.text, ft.x, ft.y);
+                    ctx.fillText(ft.text, ft.x, ft.y);
                     ctx.restore();
                 }
             }
@@ -1101,6 +1203,18 @@
             let expanded = new Set(toEliminate);
 
             if (isLoopClosed) {
+                let extraTime = selectedChain.length - 1; 
+                timeLeft += extraTime;
+                document.getElementById('mode-val').innerText = timeLeft + 's';
+                playTimeSound();
+
+                let lastPos = selectedChain[selectedChain.length - 1];
+                spawnFloatingText(
+                    lastPos.c * CELL_SIZE + CELL_SIZE / 2,
+                    lastPos.r * CELL_SIZE + CELL_SIZE / 2,
+                    `+${extraTime}s`
+                );
+
                 for (let r = 0; r < GRID_SIZE; r++) {
                     for (let c = 0; c < GRID_SIZE; c++) {
                         if (grid[r][c] && grid[r][c].id === hatTypeId) {
