@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- Metadatos de Open Graph para WhatsApp y Redes Sociales -->
+    <meta property="og:title" content="Hat Again">
+    <meta property="og:description" content="¡Conecta sombreros!">
+    <meta property="og:image" content="https://javier-vicente-mora.github.io/hats-again/nuevoIcon2.png">
+    <meta property="og:url" content="https://tu-usuario.github.io/tu-repositorio/">
+    <meta property="og:type" content="website">
+    
     <title>Hat Again - Dots Edition</title>
     <style>
         @font-face {
@@ -178,6 +185,7 @@
         }
 
         /* Pantalla de inicio con portada.png a pantalla completa */
+/* Pantalla de inicio con portada.png adaptada sin cortes */
         #start-screen {
             position: absolute;
             top: 0;
@@ -185,17 +193,16 @@
             width: 100%;
             height: 100%;
             background: url('portada.png') no-repeat center center;
-            background-size: cover;
+            background-size: 100% 100%; /* Esto deforma la imagen para que encaje exacta, o usa 'contain' si prefieres bandas */
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             z-index: 10;
             border-radius: 16px;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
         }
-
         /* Botón de música arriba a la derecha en la portada */
         .btn-music-toggle {
             position: absolute;
