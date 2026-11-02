@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <!-- Metadatos de Open Graph para WhatsApp y Redes Sociales -->
+    
+<!-- Metadatos de Open Graph para WhatsApp y Redes Sociales -->
     <meta property="og:title" content="Hat Again">
     <meta property="og:description" content="¡Conecta sombreros y cierra bucles contra reloj en Hat Again!">
-    <meta property="og:image" content="https://javier-vicente-mora.github.io/hats-again/nuevoIcon2.png">
-    <meta property="og:url" content="https://javier-vicente-mora.github.io/hats-again/">
+    <meta property="og:image" content="https://hats-again.netlify.app/nuevoIcon2.png">
+    <meta property="og:url" content="https://hats-again.netlify.app/">
     <meta property="og:type" content="website">
     <title>Hat Again!!</title>
     <style>
@@ -186,8 +187,7 @@
             align-items: center;
         }
 
-        /* 1. Solución portada: Ajuste de flexbox y espaciado inferior seguro para móviles */
-        #start-screen {
+#start-screen {
             position: absolute;
             top: 0;
             left: 0;
@@ -201,7 +201,7 @@
             align-items: center;
             z-index: 10;
             border-radius: 16px;
-            padding: 20px 20px 50px 20px;
+            padding: 20px 20px 90px 20px; /* Subido aumentando el padding inferior */
             text-align: center;
         }
 
@@ -229,7 +229,6 @@
             transform: scale(0.9);
         }
 
-        /* Pantallas superpuestas con scroll habilitado */
         .overlay {
             position: absolute;
             top: 0;
@@ -273,7 +272,6 @@
             margin-bottom: 6px;
         }
 
-        /* 2. Solución Scroll: Forzar pan-y y permitir eventos táctiles nativos en las listas */
         .achievements-grid {
             width: 100%;
             max-width: 360px;
@@ -472,7 +470,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* 2. Solución Scroll: Lista de clasificación con scroll táctil fluido */
         .leaderboard-list {
             width: 100%;
             max-width: 320px;
@@ -607,7 +604,7 @@
     <div class="overlay hidden" id="gameover-screen">
         <div class="title" style="color: #ff7675; font-size: 28px; margin-bottom: 2px;">¡TIEMPO AGOTADO!</div>
         <div class="subtitle" style="margin-bottom: 6px;">Puntuación Final</div>
-        <div style="font-size: 42px; font-weight: bold; color: #ffeaa7; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
+        <div style="font-size: 42px; font-weight: bold; color: #000000; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
         
         <div style="font-size: 13px; color: #c8bdf7; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;" id="gameover-achievements-title">
             <img src="img/logros@4x.png" alt="Logros" style="width: 18px; height: 18px; object-fit: contain;"> 
@@ -883,51 +880,59 @@
         });
     }
 
+    // Identificador único de este dispositivo anónimo
+    function getDeviceID() {
+        let id = localStorage.getItem('hat_again_device_id');
+        if (!id) {
+            id = 'dev_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('hat_again_device_id', id);
+        }
+        return id;
+    }
+
     async function getScores() {
+        // Usamos el almacenamiento local del navegador como método principal y seguro para Netlify
         try {
-            let res = await fetch(DB_API_URL + '/latest');
-            let data = await res.json();
-            return data.record || [];
-        } catch (e) {
             let local = localStorage.getItem('hat_again_scores');
-            return local ? JSON.parse(local) : [
-                { name: "HatMaster", score: 450 },
-                { name: "Player1", score: 320 },
-                { name: "DotsPro", score: 210 }
-            ];
+            return local ? JSON.parse(local) : [];
+        } catch (e) {
+            console.log("Error al leer los récords locales:", e);
+            return [];
         }
     }
 
     async function checkAndSaveHighScore(newScore) {
-        let personalBest = parseInt(localStorage.getItem('hat_again_personal_best') || '0');
-        if (newScore > personalBest) {
-            localStorage.setItem('hat_again_personal_best', newScore);
-            
-            let playerName = localStorage.getItem('hat_again_player_name');
-            if (!playerName || playerName === 'Jugador') {
-                playerName = prompt("¡Nuevo Récord Global! Introduce tu nombre:", "Jugador") || "Jugador";
-                localStorage.setItem('hat_again_player_name', playerName);
-            }
-
-            let scores = await getScores();
-            scores.push({ name: playerName, score: newScore });
-            scores.sort((a, b) => b.score - a.score);
-            scores = scores.slice(0, 50);
-
-            localStorage.setItem('hat_again_scores', JSON.stringify(scores));
-
-            try {
-                await fetch(DB_API_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(scores)
-                });
-            } catch (err) {
-                console.log("Servidor local mode active.");
-            }
-
-            alert(`🎉 ¡FELICIDADES! Has actualizado el récord global con ${newScore} puntos.`);
+        let deviceId = getDeviceID();
+        let playerName = localStorage.getItem('hat_again_player_name');
+        
+        // Si no tiene nombre guardado, se le pide al terminar la partida
+        if (!playerName || playerName === 'Jugador') {
+            playerName = prompt("¡Partida finalizada! Introduce tu nombre para la clasificación:", "Jugador") || "Jugador";
+            localStorage.setItem('hat_again_player_name', playerName);
         }
+
+        let scores = await getScores();
+        
+        // Comprobar si este dispositivo ya tiene un récord registrado
+        let existingIndex = scores.findIndex(item => item.deviceId === deviceId);
+
+        if (existingIndex !== -1) {
+            // Actualizar solo si la nueva puntuación es mayor que la anterior
+            if (newScore > scores[existingIndex].score) {
+                scores[existingIndex].score = newScore;
+                scores[existingIndex].name = playerName;
+            }
+        } else {
+            // Añadir el nuevo récord para este dispositivo
+            scores.push({ deviceId: deviceId, name: playerName, score: newScore });
+        }
+
+        // Ordenar de mayor a menor puntuación y limitar al top 50
+        scores.sort((a, b) => b.score - a.score);
+        scores = scores.slice(0, 50);
+
+        // Guardar de forma persistente en el dispositivo
+        localStorage.setItem('hat_again_scores', JSON.stringify(scores));
     }
 
     async function showLeaderboard() {
@@ -939,6 +944,11 @@
         
         let scores = await getScores();
         container.innerHTML = '';
+
+        if (scores.length === 0) {
+            container.innerHTML = '<div style="padding: 20px; color: #a097d1;">No hay récords todavía. ¡Sé el primero!</div>';
+            return;
+        }
         
         scores.forEach((item, index) => {
             let row = document.createElement('div');
