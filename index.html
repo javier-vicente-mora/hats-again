@@ -144,14 +144,14 @@
         .btn {
             border: none;
             color: white;
-            padding: 14px 28px;
+            padding: 12px 24px;
             font-size: 18px;
             font-weight: bold;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
-            max-width: 260px;
+            max-width: 240px;
             text-align: center;
             touch-action: manipulation;
         }
@@ -181,11 +181,12 @@
         .menu-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
             align-items: center;
         }
 
+        /* Se eleva el margen inferior para que los botones queden perfectamente visibles en la nube de la portada */
         #start-screen {
             position: absolute;
             top: 0;
@@ -200,7 +201,7 @@
             align-items: center;
             z-index: 10;
             border-radius: 16px;
-            padding: 40px 20px;
+            padding: 20px 20px 80px 20px;
             text-align: center;
         }
 
@@ -228,7 +229,7 @@
             transform: scale(0.9);
         }
 
-        /* Pantallas superpuestas con scroll vertical habilitado */
+        /* Pantallas superpuestas con scroll habilitado */
         .overlay {
             position: absolute;
             top: 0;
@@ -246,7 +247,6 @@
             padding: 20px;
             text-align: center;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
         }
 
@@ -273,12 +273,12 @@
             margin-bottom: 6px;
         }
 
-        /* Cuadrícula de logros con scroll vertical táctil fluido */
+        /* Cuadrícula de logros con soporte de scroll vertical nativo */
         .achievements-grid {
             width: 100%;
             max-width: 360px;
             max-height: 280px;
-            overflow-y: auto;
+            overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             display: grid;
@@ -472,7 +472,7 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Lista de clasificación con scroll vertical táctil fluido */
+        /* Lista de clasificación con scroll táctil fluido */
         .leaderboard-list {
             width: 100%;
             max-width: 320px;
@@ -563,15 +563,15 @@
     <div id="start-screen">
         <button class="btn-music-toggle" id="music-toggle-btn" onclick="toggleMusic()">🔊</button>
         <div class="menu-buttons">
-            <button class="btn btn-secondary" onclick="startGame()" style="max-width: 240px;">JUGAR</button>
-            <button class="btn btn-achievements" onclick="showAchievements()" style="max-width: 240px;">LOGROS</button>
-            <button class="btn btn-leaderboard" onclick="showLeaderboard()" style="max-width: 240px;">CLASIFICACIÓN</button>
+            <button class="btn btn-secondary" onclick="startGame()">JUGAR</button>
+            <button class="btn btn-achievements" onclick="showAchievements()">LOGROS</button>
+            <button class="btn btn-leaderboard" onclick="showLeaderboard()">CLASIFICACIÓN</button>
         </div>
     </div>
 
     <!-- Pantalla de Logros / Personajes -->
     <div class="overlay hidden" id="achievements-screen">
-        <div class="title" style="color: #a29bfe; font-size: 24px; margin-bottom: 4px;">LOGROS Y PERSONAJES</div>
+        <div class="title" style="color: #000000; font-size: 24px; margin-bottom: 4px;">LOGROS</div>
         <div class="subtitle" style="margin-bottom: 12px;" id="achievement-counter">Desbloqueados: 5 / 37</div>
         
         <div class="achievements-grid" id="achievements-container"></div>
@@ -595,7 +595,7 @@
     <!-- Pantalla de Clasificación -->
     <div class="overlay hidden" id="leaderboard-screen">
         <img src="img/logros@4x.png" alt="Logros" class="header-icon">
-        <div class="title" style="color: #ffeaa7; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
+        <div class="title" style="color: #000000; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
         
         <div class="leaderboard-list" id="leaderboard-container">
             <div style="padding: 20px; color: #a097d1;">Cargando récords...</div>
@@ -1342,14 +1342,33 @@
         document.getElementById('gameover-screen').classList.remove('hidden');
     }
 
+    // Comprobar si hay algún overlay activo para permitir el desplazamiento táctil sin bloqueos del canvas
+    function isOverlayVisible() {
+        return !document.getElementById('start-screen').classList.contains('hidden') ||
+               !document.getElementById('achievements-screen').classList.contains('hidden') ||
+               !document.getElementById('leaderboard-screen').classList.contains('hidden') ||
+               !document.getElementById('gameover-screen').classList.contains('hidden');
+    }
+
     canvas.addEventListener('mousedown', handleStart);
     canvas.addEventListener('mousemove', handleMove);
     canvas.addEventListener('mouseup', handleEnd);
     canvas.addEventListener('mouseleave', handleEnd);
 
-    canvas.addEventListener('touchstart', (e) => { handleStart(e); }, { passive: true });
-    canvas.addEventListener('touchmove', (e) => { handleMove(e); }, { passive: true });
-    canvas.addEventListener('touchend', (e) => { handleEnd(e); }, { passive: true });
+    canvas.addEventListener('touchstart', (e) => { 
+        if (isOverlayVisible()) return;
+        handleStart(e); 
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => { 
+        if (isOverlayVisible()) return;
+        handleMove(e); 
+    }, { passive: true });
+
+    canvas.addEventListener('touchend', (e) => { 
+        if (isOverlayVisible()) return;
+        handleEnd(e); 
+    }, { passive: true });
 
     setupActiveHats();
     initGrid();
