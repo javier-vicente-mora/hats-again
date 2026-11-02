@@ -3,13 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <!-- Metadatos de Open Graph para WhatsApp y Redes Sociales -->
-    <meta property="og:title" content="Hat Again">
-    <meta property="og:description" content="¡Conecta sombreros!">
-    <meta property="og:image" content="https://javier-vicente-mora.github.io/hats-again/nuevoIcon2.png">
-    <meta property="og:url" content="https://tu-usuario.github.io/tu-repositorio/">
-    <meta property="og:type" content="website">
-    
     <title>Hat Again - Dots Edition</title>
     <style>
         @font-face {
@@ -35,7 +28,6 @@
             box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none;
             margin: 0;
             padding: 0;
             font-family: 'Cardenio Modern', sans-serif;
@@ -74,6 +66,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px;
+            touch-action: none;
         }
 
         .stat-box {
@@ -116,6 +109,7 @@
             letter-spacing: 1px;
             transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            touch-action: manipulation;
         }
 
         .btn-quit-top:hover {
@@ -136,6 +130,7 @@
             cursor: pointer;
             width: 100%;
             height: 100%;
+            touch-action: none;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
         }
@@ -152,6 +147,7 @@
             width: 100%;
             max-width: 260px;
             text-align: center;
+            touch-action: manipulation;
         }
 
         .btn:active {
@@ -184,8 +180,6 @@
             align-items: center;
         }
 
-        /* Pantalla de inicio con portada.png a pantalla completa */
-/* Pantalla de inicio con portada.png adaptada sin cortes */
         #start-screen {
             position: absolute;
             top: 0;
@@ -193,17 +187,17 @@
             width: 100%;
             height: 100%;
             background: url('portada.png') no-repeat center center;
-            background-size: 100% 100%; /* Esto deforma la imagen para que encaje exacta, o usa 'contain' si prefieres bandas */
+            background-size: cover;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             z-index: 10;
             border-radius: 16px;
-            padding: 30px 20px;
+            padding: 40px 20px;
             text-align: center;
         }
-        /* Botón de música arriba a la derecha en la portada */
+
         .btn-music-toggle {
             position: absolute;
             top: 15px;
@@ -221,13 +215,14 @@
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
             transition: transform 0.1s;
+            touch-action: manipulation;
         }
 
         .btn-music-toggle:active {
             transform: scale(0.9);
         }
 
-        /* Resto de overlays unificados */
+        /* Pantallas superpuestas con scroll vertical habilitado */
         .overlay {
             position: absolute;
             top: 0;
@@ -245,6 +240,8 @@
             padding: 20px;
             text-align: center;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .title {
@@ -270,11 +267,14 @@
             margin-bottom: 6px;
         }
 
+        /* Cuadrícula de logros con scroll vertical táctil fluido */
         .achievements-grid {
             width: 100%;
             max-width: 360px;
-            max-height: 260px;
+            max-height: 280px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
@@ -296,6 +296,7 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             cursor: pointer;
             transition: transform 0.1s;
+            touch-action: manipulation;
         }
 
         .achievement-card:active {
@@ -343,6 +344,7 @@
             align-items: center;
             z-index: 30;
             padding: 20px;
+            touch-action: none;
         }
 
         .modal-content {
@@ -432,6 +434,7 @@
             min-height: 70px;
             align-items: center;
             justify-content: center;
+            touch-action: pan-x;
         }
 
         .new-badge {
@@ -463,11 +466,13 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
+        /* Lista de clasificación con scroll vertical táctil fluido */
         .leaderboard-list {
             width: 100%;
             max-width: 320px;
             height: 280px;
             overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             background: rgba(25, 20, 50, 0.75);
             backdrop-filter: blur(8px);
@@ -548,7 +553,7 @@
         <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Pantalla de Inicio con portada.png -->
+    <!-- Pantalla de Inicio -->
     <div id="start-screen">
         <button class="btn-music-toggle" id="music-toggle-btn" onclick="toggleMusic()">🔊</button>
         <div class="menu-buttons">
@@ -560,7 +565,7 @@
 
     <!-- Pantalla de Logros / Personajes -->
     <div class="overlay hidden" id="achievements-screen">
-        <div class="title" style="color: #010009; font-size: 24px; margin-bottom: 4px;">LOGROS</div>
+        <div class="title" style="color: #a29bfe; font-size: 24px; margin-bottom: 4px;">LOGROS Y PERSONAJES</div>
         <div class="subtitle" style="margin-bottom: 12px;" id="achievement-counter">Desbloqueados: 5 / 37</div>
         
         <div class="achievements-grid" id="achievements-container"></div>
@@ -584,7 +589,7 @@
     <!-- Pantalla de Clasificación -->
     <div class="overlay hidden" id="leaderboard-screen">
         <img src="img/logros@4x.png" alt="Logros" class="header-icon">
-        <div class="title" style="color: #080600; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
+        <div class="title" style="color: #ffeaa7; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
         
         <div class="leaderboard-list" id="leaderboard-container">
             <div style="padding: 20px; color: #a097d1;">Cargando récords...</div>
@@ -596,7 +601,7 @@
     <div class="overlay hidden" id="gameover-screen">
         <div class="title" style="color: #ff7675; font-size: 28px; margin-bottom: 2px;">¡TIEMPO AGOTADO!</div>
         <div class="subtitle" style="margin-bottom: 6px;">Puntuación Final</div>
-        <div style="font-size: 42px; font-weight: bold; color: #000000; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
+        <div style="font-size: 42px; font-weight: bold; color: #ffeaa7; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
         
         <div style="font-size: 13px; color: #c8bdf7; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;" id="gameover-achievements-title">
             <img src="img/logros@4x.png" alt="Logros" style="width: 18px; height: 18px; object-fit: contain;"> 
@@ -612,8 +617,6 @@
 </div>
 
 <audio id="bg-music" src="gameplaybigbang.ogg" loop></audio>
-
-<!-- Sonido de tiempo extra -->
 <audio id="time-sound" preload="auto">
     <source src="sounds/activar_magia.ogg" type="audio/ogg">
     <source src="sounds/activar_magia.wav" type="audio/wav">
@@ -1338,9 +1341,9 @@
     canvas.addEventListener('mouseup', handleEnd);
     canvas.addEventListener('mouseleave', handleEnd);
 
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleStart(e); }, { passive: false });
-    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, { passive: false });
-    canvas.addEventListener('touchend', (e) => { e.preventDefault(); handleEnd(e); }, { passive: false });
+    canvas.addEventListener('touchstart', (e) => { handleStart(e); }, { passive: true });
+    canvas.addEventListener('touchmove', (e) => { handleMove(e); }, { passive: true });
+    canvas.addEventListener('touchend', (e) => { handleEnd(e); }, { passive: true });
 
     setupActiveHats();
     initGrid();
