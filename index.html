@@ -36,11 +36,10 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 15px;
+            padding: 15px;
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
             position: relative;
             border-radius: 16px;
-            overflow: hidden;
         }
 
         header {
@@ -48,22 +47,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 5px;
+            padding: 5px;
         }
 
         .stat-box {
-            background: linear-gradient(135deg, rgba(42, 34, 78, 0.8), rgba(24, 20, 51, 0.9));
+            background: linear-gradient(135deg, rgba(42, 34, 78, 0.85), rgba(24, 20, 51, 0.95));
             backdrop-filter: blur(8px);
-            padding: 10px 18px;
-            border-radius: 16px;
+            padding: 8px 16px;
+            border-radius: 14px;
             text-align: center;
-            min-width: 120px;
+            min-width: 110px;
             border: 1px solid rgba(160, 151, 209, 0.3);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .stat-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #c8bdf7;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -72,16 +71,35 @@
         }
 
         .stat-value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             color: #ffeaa7;
             text-shadow: 0 2px 8px rgba(255, 234, 167, 0.3);
         }
 
+        .btn-quit-top {
+            background: linear-gradient(135deg, rgba(255, 118, 117, 0.25), rgba(214, 48, 49, 0.35));
+            border: 1px solid rgba(255, 118, 117, 0.5);
+            color: #ff7675;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-quit-top:hover {
+            background: linear-gradient(135deg, rgba(255, 118, 117, 0.4), rgba(214, 48, 49, 0.6));
+            color: #ffffff;
+        }
+
         #board-wrapper {
             position: relative;
-            width: 360px;
-            height: 360px;
+            width: 340px;
+            height: 340px;
             margin: auto;
         }
 
@@ -89,13 +107,10 @@
             background: transparent;
             display: block;
             cursor: pointer;
-        }
-
-        .controls {
             width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
+            height: 100%;
+            /* Renderizado suave sin forzar pixelación */
+            image-rendering: auto;
         }
 
         .btn {
@@ -114,25 +129,6 @@
 
         .btn:active {
             transform: scale(0.96);
-        }
-
-        .btn-quit {
-            background: rgba(255, 118, 117, 0.2);
-            border: 1px solid rgba(255, 118, 117, 0.5);
-            color: #ff7675;
-            padding: 8px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 20px;
-            max-width: 130px;
-            letter-spacing: 1px;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-quit:hover {
-            background: rgba(255, 118, 117, 0.35);
-            color: #ffffff;
         }
 
         .btn-secondary {
@@ -167,23 +163,26 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(24,20,51,0.95) 0%, rgba(10,8,22,0.98) 100%);
-            backdrop-filter: blur(10px);
+            /* Fondo ajustado para usar la imagen img/background.PNG */
+            background: linear-gradient(180deg, rgba(15, 12, 32, 0.85) 0%, rgba(10, 8, 22, 0.92) 100%), url('img/background.PNG') no-repeat center center;
+            background-size: cover;
+            backdrop-filter: blur(6px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10;
             border-radius: 16px;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
+            overflow-y: auto;
         }
 
         .logo-container {
-            width: 130px;
-            height: 130px;
-            margin-bottom: 15px;
-            border-radius: 28px;
+            width: 110px;
+            height: 110px;
+            margin-bottom: 12px;
+            border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(116, 185, 255, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.15);
@@ -198,44 +197,52 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
         }
 
         .title {
-            font-size: 30px;
+            font-size: 26px;
             font-weight: 900;
             color: #ffffff;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             letter-spacing: 2px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: #a097d1;
-            margin-bottom: 25px;
+            margin-bottom: 18px;
             font-weight: 500;
+        }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-bottom: 6px;
         }
 
         .achievements-grid {
             width: 100%;
             max-width: 360px;
-            max-height: 320px;
+            max-height: 260px;
             overflow-y: auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 15px;
         }
 
         .achievement-card {
-            background: rgba(25, 20, 50, 0.8);
+            background: rgba(25, 20, 50, 0.85);
             border-radius: 10px;
-            padding: 8px 4px;
+            padding: 6px 4px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -255,14 +262,14 @@
         }
 
         .achievement-card img {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             object-fit: contain;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .achievement-card span {
-            font-size: 11px;
+            font-size: 10px;
             color: #c8bdf7;
             text-align: center;
             width: 100%;
@@ -271,73 +278,182 @@
             white-space: nowrap;
         }
 
-        /* Notificación emergente de Logro Desbloqueado */
-        #achievement-popup {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(162, 155, 254, 0.95));
-            border: 2px solid #ffeaa7;
-            border-radius: 16px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            z-index: 100;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            width: 90%;
-            max-width: 360px;
-        }
-
-        #achievement-popup.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        #popup-img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 4px;
-        }
-
-        .popup-text h4 {
-            font-size: 12px;
+        .achievement-card small {
+            font-size: 8px;
             color: #ffeaa7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2px;
         }
 
-        .popup-text p {
-            font-size: 16px;
-            font-weight: bold;
+        /* Modal para ver logro en grande */
+        #achievement-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 8, 22, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(42, 34, 78, 0.95), rgba(24, 20, 51, 0.98));
+            border: 2px solid rgba(162, 155, 254, 0.5);
+            border-radius: 24px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 280px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-img-container {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .modal-img-container img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 900;
             color: #ffffff;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .modal-status {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .modal-status.unlocked {
+            background: rgba(85, 239, 196, 0.2);
+            color: #55efc4;
+            border: 1px solid rgba(85, 239, 196, 0.4);
+        }
+
+        .modal-status.locked {
+            background: rgba(255, 118, 117, 0.2);
+            color: #ff7675;
+            border: 1px solid rgba(255, 118, 117, 0.4);
+        }
+
+        .modal-desc {
+            font-size: 13px;
+            color: #c8bdf7;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        #gameover-new-achievements {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            max-width: 340px;
+            padding: 8px;
+            background: rgba(162, 155, 254, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(162, 155, 254, 0.3);
+            margin-bottom: 15px;
+            min-height: 70px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .new-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(25, 20, 50, 0.9);
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid #ffeaa7;
+            animation: popIn 0.4s ease;
+        }
+
+        .new-badge img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .new-badge span {
+            font-size: 9px;
+            color: #ffeaa7;
+            margin-top: 2px;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .leaderboard-list {
             width: 100%;
             max-width: 320px;
-            max-height: 260px;
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
+            height: 280px;
+            overflow-y: scroll;
+            touch-action: pan-y;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 10px;
             margin-bottom: 20px;
-            padding: 10px;
+            padding: 8px;
+        }
+
+        .leaderboard-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .leaderboard-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .leaderboard-list::-webkit-scrollbar-thumb {
+            background: rgba(254, 202, 87, 0.6);
+            border-radius: 10px;
+        }
+        .leaderboard-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(254, 202, 87, 0.9);
         }
 
         .leaderboard-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
+            padding: 10px 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .leaderboard-item:last-child {
@@ -347,7 +463,7 @@
         .rank {
             font-weight: bold;
             color: #ffeaa7;
-            width: 30px;
+            width: 35px;
             text-align: left;
         }
 
@@ -370,20 +486,12 @@
 <body>
 
 <div id="game-container">
-    <!-- Notificación emergente de logros -->
-    <div id="achievement-popup">
-        <img id="popup-img" src="" alt="Logro">
-        <div class="popup-text">
-            <h4>¡Nuevo Logro Desbloqueado!</h4>
-            <p id="popup-name">Personaje</p>
-        </div>
-    </div>
-
     <header>
         <div class="stat-box">
             <div class="stat-label">PUNTOS</div>
             <div class="stat-value" id="score">0</div>
         </div>
+        <button class="btn-quit-top" onclick="showMenu()">SALIR</button>
         <div class="stat-box">
             <div class="stat-label">TIEMPO</div>
             <div class="stat-value" id="mode-val">30s</div>
@@ -392,10 +500,6 @@
 
     <div id="board-wrapper">
         <canvas id="gameCanvas" width="360" height="360"></canvas>
-    </div>
-
-    <div class="controls">
-        <button class="btn btn-quit" onclick="showMenu()">SALIR</button>
     </div>
 
     <!-- Pantalla de Inicio -->
@@ -415,37 +519,53 @@
 
     <!-- Pantalla de Logros / Personajes -->
     <div class="overlay hidden" id="achievements-screen">
-        <div class="title" style="color: #a29bfe; font-size: 24px; margin-bottom: 5px;">LOGROS Y PERSONAJES</div>
-        <div class="subtitle" style="margin-bottom: 15px;" id="achievement-counter">Desbloqueados: 5 / 37</div>
+        <div class="title" style="color: #a29bfe; font-size: 22px; margin-bottom: 4px;">LOGROS Y PERSONAJES</div>
+        <div class="subtitle" style="margin-bottom: 12px;" id="achievement-counter">Desbloqueados: 5 / 37</div>
         
         <div class="achievements-grid" id="achievements-container"></div>
 
-        <button class="btn btn-secondary" onclick="closeAchievements()" style="max-width: 200px;">VOLVER</button>
+        <button class="btn btn-secondary" onclick="closeAchievements()" style="max-width: 180px;">VOLVER</button>
+    </div>
+
+    <!-- Modal para ver logro en grande -->
+    <div class="hidden" id="achievement-modal">
+        <div class="modal-content">
+            <div class="modal-img-container">
+                <img id="modal-char-img" src="" alt="Personaje">
+            </div>
+            <div class="modal-title" id="modal-char-name">Nombre</div>
+            <div class="modal-status" id="modal-char-status">Desbloqueado</div>
+            <div class="modal-desc" id="modal-char-desc">Descripción</div>
+            <button class="btn btn-secondary" onclick="closeModal()" style="max-width: 140px; padding: 10px 20px; font-size: 14px;">CERRAR</button>
+        </div>
     </div>
 
     <!-- Pantalla de Clasificación -->
     <div class="overlay hidden" id="leaderboard-screen">
-        <div class="title" style="color: #ffeaa7; font-size: 26px; margin-bottom: 5px;">CLASIFICACIÓN</div>
-        <div class="subtitle" style="margin-bottom: 15px;">Mejores Puntuaciones</div>
+        <img src="img/logros@4x.png" alt="Logros" class="header-icon">
+        <div class="title" style="color: #ffeaa7; font-size: 26px; margin-bottom: 0px;">CLASIFICACIÓN</div>
         
-        <div class="leaderboard-list" id="leaderboard-container"></div>
-        <button class="btn btn-secondary" onclick="closeLeaderboard()" style="max-width: 200px;">VOLVER</button>
+        <div class="leaderboard-list" id="leaderboard-container">
+            <div style="padding: 20px; color: #a097d1;">Cargando récords...</div>
+        </div>
+        <button class="btn btn-secondary" onclick="closeLeaderboard()" style="max-width: 180px;">VOLVER</button>
     </div>
 
     <!-- Pantalla Fin de Juego -->
     <div class="overlay hidden" id="gameover-screen">
-        <div class="title" style="color: #ff7675; font-size: 32px; margin-bottom: 5px;">¡TIEMPO AGOTADO!</div>
-        <div class="subtitle" style="margin-bottom: 10px;">Puntuación Final</div>
-        <div style="font-size: 48px; font-weight: bold; color: #ffeaa7; margin-bottom: 15px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
+        <div class="title" style="color: #ff7675; font-size: 28px; margin-bottom: 2px;">¡TIEMPO AGOTADO!</div>
+        <div class="subtitle" style="margin-bottom: 6px;">Puntuación Final</div>
+        <div style="font-size: 42px; font-weight: bold; color: #ffeaa7; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,234,167,0.4);" id="final-score">0</div>
         
-        <div style="background: rgba(162, 155, 254, 0.15); border: 1px solid rgba(162, 155, 254, 0.4); padding: 10px 20px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; color: #d1cceb;" id="gameover-achievements-text">
-            🏆 Logros desbloqueados: 5 / 37
+        <div style="font-size: 12px; color: #c8bdf7; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;" id="gameover-achievements-title">
+            <img src="img/logros@4x.png" alt="Logros" style="width: 18px; height: 18px; object-fit: contain;"> 
+            Nuevos logros conseguidos en esta partida:
         </div>
+        <div id="gameover-new-achievements"></div>
         
         <div class="menu-buttons">
-            <button class="btn btn-secondary" onclick="saveScorePrompt()" style="max-width: 240px;">GUARDAR RÉCORD</button>
-            <button class="btn btn-achievements" onclick="showAchievements()" style="max-width: 240px;">VER LOGROS</button>
-            <button class="btn btn-secondary" onclick="showMenu()" style="max-width: 240px; background: linear-gradient(135deg, #ff7675, #d63031);">MENÚ PRINCIPAL</button>
+            <button class="btn btn-achievements" onclick="showAchievements()" style="max-width: 220px;">LOGROS</button>
+            <button class="btn btn-secondary" onclick="showMenu()" style="max-width: 220px; background: linear-gradient(135deg, #ff7675, #d63031);">MENÚ PRINCIPAL</button>
         </div>
     </div>
 </div>
@@ -457,44 +577,47 @@
     const CELL_SIZE = 60;
     const CANVAS_SIZE = 360;
 
+    const BIN_ID = '673d3284ad19ca34f8ce08e8'; 
+    const DB_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
     const ALL_CHARACTERS = [
-        { id: 0, name: 'Goku', color: '#ff7675', src: 'img/goku@4x.png', defaultUnlocked: true },
-        { id: 1, name: 'Batman', color: '#ffeaa7', src: 'img/batman@4x.png', defaultUnlocked: true },
-        { id: 2, name: 'Doraemon', color: '#74b9ff', src: 'img/doraemon@4x.png', defaultUnlocked: true },
-        { id: 3, name: 'Enigma', color: '#55efc4', src: 'img/enigma@4x.png', defaultUnlocked: true },
-        { id: 4, name: 'Flash', color: '#fd79a8', src: 'img/flash@4x.png', defaultUnlocked: true },
-        { id: 5, name: 'Arale', color: '#ff9ff3', src: 'img/arale@4x.png', pointsReq: 30, loopsReq: 2 },
-        { id: 6, name: 'Asterix', color: '#feca57', src: 'img/asterix@4x.png', pointsReq: 60, loopsReq: 4 },
-        { id: 7, name: 'Bender', color: '#54a0ff', src: 'img/bender@4x.png', pointsReq: 90, loopsReq: 6 },
-        { id: 8, name: 'Calimero', color: '#ff6b6b', src: 'img/calimero@4x.png', pointsReq: 120, loopsReq: 8 },
-        { id: 9, name: 'Capitan', color: '#48dbfb', src: 'img/capitan@4x.png', pointsReq: 150, loopsReq: 10 },
-        { id: 10, name: 'Chaplin', color: '#10ac84', src: 'img/chaplin@4x.png', pointsReq: 180, loopsReq: 12 },
-        { id: 11, name: 'Heisenberg', color: '#00d2d3', src: 'img/heisenberg@4x.png', pointsReq: 210, loopsReq: 14 },
-        { id: 12, name: 'Hogan', color: '#ff9f43', src: 'img/hogan@4x.png', pointsReq: 240, loopsReq: 16 },
-        { id: 13, name: 'Hojalata', color: '#c8d6e5', src: 'img/hojalata@4x.png', pointsReq: 270, loopsReq: 18 },
-        { id: 14, name: 'Jones', color: '#ee5253', src: 'img/jones@4x.png', pointsReq: 300, loopsReq: 20 },
-        { id: 15, name: 'Kaito', color: '#0abde3', src: 'img/kaito@4x.png', pointsReq: 330, loopsReq: 22 },
-        { id: 16, name: 'Killbill', color: '#f368e0', src: 'img/killbill@4x.png', pointsReq: 360, loopsReq: 24 },
-        { id: 17, name: 'Lincon', color: '#ff9f43', src: 'img/lincon@4x.png', pointsReq: 400, loopsReq: 26 },
-        { id: 18, name: 'Lobezno', color: '#ee5253', src: 'img/lobezno@4x.png', pointsReq: 440, loopsReq: 28 },
-        { id: 19, name: 'Loco', color: '#01a3a4', src: 'img/loco@4x.png', pointsReq: 480, loopsReq: 30 },
-        { id: 20, name: 'Magneto', color: '#5f27cd', src: 'img/magneto@4x.png', pointsReq: 520, loopsReq: 32 },
-        { id: 21, name: 'Mario', color: '#ff6b6b', src: 'img/mario@4x.png', pointsReq: 560, loopsReq: 34 },
-        { id: 22, name: 'Mascara', color: '#1dd1a1', src: 'img/mascara@4x.png', pointsReq: 600, loopsReq: 36 },
-        { id: 23, name: 'Megaman', color: '#2e86de', src: 'img/megaman@4x.png', pointsReq: 650, loopsReq: 38 },
-        { id: 24, name: 'Mickey', color: '#ff9ff3', src: 'img/mickey@4x.png', pointsReq: 700, loopsReq: 40 },
-        { id: 25, name: 'Musculman', color: '#ff6b6b', src: 'img/musculman@4x.png', pointsReq: 750, loopsReq: 42 },
-        { id: 26, name: 'Naranja', color: '#ffa502', src: 'img/naranja@4x.png', pointsReq: 800, loopsReq: 44 },
-        { id: 27, name: 'Osoyogi', color: '#70a1ff', src: 'img/osoyogi@4x.png', pointsReq: 850, loopsReq: 46 },
-        { id: 28, name: 'Pato', color: '#fffa65', src: 'img/pato@4x.png', pointsReq: 900, loopsReq: 48 },
-        { id: 29, name: 'Pitufo', color: '#74b9ff', src: 'img/pitufo@4x.png', pointsReq: 950, loopsReq: 50 },
-        { id: 30, name: 'Pocoyo', color: '#0984e3', src: 'img/pocoyo@4x.png', pointsReq: 1000, loopsReq: 52 },
-        { id: 31, name: 'Popeye', color: '#ff5252', src: 'img/popeye@4x.png', pointsReq: 1100, loopsReq: 54 },
-        { id: 32, name: 'R2D2', color: '#a4b0be', src: 'img/r2d2@4x.png', pointsReq: 1200, loopsReq: 56 },
-        { id: 33, name: 'Robinhood', color: '#218c74', src: 'img/robinhood@4x.png', pointsReq: 1300, loopsReq: 58 },
-        { id: 34, name: 'Robocop', color: '#718093', src: 'img/robocop@4x.png', pointsReq: 1400, loopsReq: 60 },
-        { id: 35, name: 'Vader', color: '#2f3542', src: 'img/vader@4x.png', pointsReq: 1500, loopsReq: 62 },
-        { id: 36, name: 'Venger', color: '#8854d0', src: 'img/venger@4x.png', pointsReq: 1600, loopsReq: 64 }
+        { id: 0, name: 'Goku', color: '#ff7675', src: 'img/goku.png', pointsReq: 0 },
+        { id: 1, name: 'Batman', color: '#ffeaa7', src: 'img/batman.png', pointsReq: 0 },
+        { id: 2, name: 'Doraemon', color: '#74b9ff', src: 'img/doraemon.png', pointsReq: 0 },
+        { id: 3, name: 'Enigma', color: '#55efc4', src: 'img/enigma.png', pointsReq: 0 },
+        { id: 4, name: 'Flash', color: '#fd79a8', src: 'img/flash.png', pointsReq: 0 },
+        { id: 5, name: 'Arale', color: '#ff9ff3', src: 'img/arale.png', pointsReq: 10 },
+        { id: 6, name: 'Asterix', color: '#feca57', src: 'img/asterix.png', pointsReq: 20 },
+        { id: 7, name: 'Bender', color: '#54a0ff', src: 'img/bender.png', pointsReq: 30 },
+        { id: 8, name: 'Calimero', color: '#ff6b6b', src: 'img/calimero.png', pointsReq: 40 },
+        { id: 9, name: 'Capitan', color: '#48dbfb', src: 'img/capitan.png', pointsReq: 50 },
+        { id: 10, name: 'Chaplin', color: '#10ac84', src: 'img/chaplin.png', pointsReq: 60 },
+        { id: 11, name: 'Heisenberg', color: '#00d2d3', src: 'img/heisenberg.png', pointsReq: 70 },
+        { id: 12, name: 'Hogan', color: '#ff9f43', src: 'img/hogan.png', pointsReq: 80 },
+        { id: 13, name: 'Hojalata', color: '#c8d6e5', src: 'img/hojalata.png', pointsReq: 90 },
+        { id: 14, name: 'Jones', color: '#ee5253', src: 'img/jones.png', pointsReq: 100 },
+        { id: 15, name: 'Kaito', color: '#0abde3', src: 'img/kaito.png', pointsReq: 110 },
+        { id: 16, name: 'Killbill', color: '#f368e0', src: 'img/killbill.png', pointsReq: 120 },
+        { id: 17, name: 'Lincon', color: '#ff9f43', src: 'img/lincon.png', pointsReq: 130 },
+        { id: 18, name: 'Lobezno', color: '#ee5253', src: 'img/lobezno.png', pointsReq: 140 },
+        { id: 19, name: 'Loco', color: '#01a3a4', src: 'img/loco.png', pointsReq: 150 },
+        { id: 20, name: 'Magneto', color: '#5f27cd', src: 'img/magneto.png', pointsReq: 160 },
+        { id: 21, name: 'Mario', color: '#ff6b6b', src: 'img/mario.png', pointsReq: 170 },
+        { id: 22, name: 'Mascara', color: '#1dd1a1', src: 'img/mascara.png', pointsReq: 180 },
+        { id: 23, name: 'Megaman', color: '#2e86de', src: 'img/megaman.png', pointsReq: 190 },
+        { id: 24, name: 'Mickey', color: '#ff9ff3', src: 'img/mickey.png', pointsReq: 200 },
+        { id: 25, name: 'Musculman', color: '#ff6b6b', src: 'img/musculman.png', pointsReq: 210 },
+        { id: 26, name: 'Naranja', color: '#ffa502', src: 'img/naranja.png', pointsReq: 220 },
+        { id: 27, name: 'Osoyogi', color: '#70a1ff', src: 'img/osoyogi.png', pointsReq: 230 },
+        { id: 28, name: 'Pato', color: '#fffa65', src: 'img/pato.png', pointsReq: 240 },
+        { id: 29, name: 'Pitufo', color: '#74b9ff', src: 'img/pitufo.png', pointsReq: 250 },
+        { id: 30, name: 'Pocoyo', color: '#0984e3', src: 'img/pocoyo.png', pointsReq: 260 },
+        { id: 31, name: 'Popeye', color: '#ff5252', src: 'img/popeye.png', pointsReq: 270 },
+        { id: 32, name: 'R2D2', color: '#a4b0be', src: 'img/r2d2.png', pointsReq: 280 },
+        { id: 33, name: 'Robinhood', color: '#218c74', src: 'img/robinhood.png', pointsReq: 290 },
+        { id: 34, name: 'Robocop', color: '#718093', src: 'img/robocop.png', pointsReq: 300 },
+        { id: 35, name: 'Vader', color: '#2f3542', src: 'img/vader.png', pointsReq: 320 },
+        { id: 36, name: 'Venger', color: '#8854d0', src: 'img/venger.png', pointsReq: 340 }
     ];
 
     function getUnlockedIds() {
@@ -502,53 +625,29 @@
         if (saved) {
             return JSON.parse(saved);
         } else {
-            let defaults = ALL_CHARACTERS.filter(c => c.defaultUnlocked).map(c => c.id);
+            let defaults = ALL_CHARACTERS.filter(c => c.pointsReq === 0).map(c => c.id);
             localStorage.setItem('hat_again_unlocked', JSON.stringify(defaults));
             return defaults;
         }
     }
 
-    let popupTimeout = null;
-    function showAchievementPopup(char) {
-        let popup = document.getElementById('achievement-popup');
-        document.getElementById('popup-img').src = char.src;
-        document.getElementById('popup-name').innerText = char.name;
-        
-        popup.classList.add('show');
-        if (popupTimeout) clearTimeout(popupTimeout);
-        popupTimeout = setTimeout(() => {
-            popup.classList.remove('show');
-        }, 3500);
-    }
+    let newlyUnlockedThisGame = [];
 
-    function unlockCharacter(char) {
-        let unlocked = getUnlockedIds();
-        if (!unlocked.includes(char.id)) {
-            unlocked.push(char.id);
-            localStorage.setItem('hat_again_unlocked', JSON.stringify(unlocked));
-            // Mostrar notificación flotante inmediata
-            showAchievementPopup(char);
-        }
-    }
+    function checkAchievements(currentScore) {
+        let unlocked = ALL_CHARACTERS.filter(c => c.pointsReq === 0).map(c => c.id);
+        let savedUnlocked = JSON.parse(localStorage.getItem('hat_again_unlocked') || JSON.stringify(unlocked));
 
-    function checkAchievements(currentScore, loopsCount) {
-        let unlocked = getUnlockedIds();
         ALL_CHARACTERS.forEach(char => {
-            if (!unlocked.includes(char.id)) {
-                if (char.pointsReq && currentScore >= char.pointsReq) {
-                    unlockCharacter(char);
+            if (!savedUnlocked.includes(char.id)) {
+                if (currentScore >= char.pointsReq) {
+                    savedUnlocked.push(char.id);
+                    if (!newlyUnlockedThisGame.some(c => c.id === char.id)) {
+                        newlyUnlockedThisGame.push(char);
+                    }
                 }
             }
         });
-
-        let totalLoops = parseInt(localStorage.getItem('hat_again_loops') || '0') + loopsCount;
-        localStorage.setItem('hat_again_loops', totalLoops);
-
-        ALL_CHARACTERS.forEach((char) => {
-            if (!getUnlockedIds().includes(char.id) && char.loopsReq && totalLoops >= char.loopsReq) {
-                unlockCharacter(char);
-            }
-        });
+        localStorage.setItem('hat_again_unlocked', JSON.stringify(savedUnlocked));
     }
 
     let ACTIVE_HAT_TYPES = [];
@@ -580,8 +679,6 @@
 
         document.getElementById('achievement-counter').innerText = `Desbloqueados: ${unlocked.length} / ${ALL_CHARACTERS.length}`;
 
-        let totalLoops = parseInt(localStorage.getItem('hat_again_loops') || '0');
-
         ALL_CHARACTERS.forEach(char => {
             let isUnlocked = unlocked.includes(char.id);
             let card = document.createElement('div');
@@ -589,16 +686,11 @@
             card.innerHTML = `
                 <img src="${char.src}" alt="${char.name}">
                 <span>${char.name}</span>
+                <small>${char.pointsReq} pts</small>
             `;
 
             card.onclick = () => {
-                if (isUnlocked) {
-                    alert(`¡${char.name} ya está desbloqueado!`);
-                } else {
-                    let pNeeded = char.pointsReq ? char.pointsReq : 0;
-                    let lNeeded = char.loopsReq ? char.loopsReq : 0;
-                    alert(`🔒 ${char.name} está bloqueado.\n\nPara desbloquearlo necesitas:\n- Alcanzar ${pNeeded} puntos totales en una partida.\n- O cerrar ${lNeeded} bucles en total (Llevas ${totalLoops}).`);
-                }
+                openModal(char, isUnlocked);
             };
 
             container.appendChild(card);
@@ -607,6 +699,31 @@
         document.getElementById('start-screen').classList.add('hidden');
         document.getElementById('gameover-screen').classList.add('hidden');
         document.getElementById('achievements-screen').classList.remove('hidden');
+    }
+
+    function openModal(char, isUnlocked) {
+        let modal = document.getElementById('achievement-modal');
+        document.getElementById('modal-char-img').src = char.src;
+        document.getElementById('modal-char-name').innerText = char.name;
+        
+        let statusEl = document.getElementById('modal-char-status');
+        let descEl = document.getElementById('modal-char-desc');
+
+        if (isUnlocked) {
+            statusEl.className = 'modal-status unlocked';
+            statusEl.innerText = '¡DESBLOQUEADO!';
+            descEl.innerText = `Has conseguido dominar este sombrero alcanzando los ${char.pointsReq} puntos.`;
+        } else {
+            statusEl.className = 'modal-status locked';
+            statusEl.innerText = '🔒 BLOQUEADO';
+            descEl.innerText = `Necesitas conseguir un récord de ${char.pointsReq} puntos en una sola partida para desbloquear este personaje.`;
+        }
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('achievement-modal').classList.add('hidden');
     }
 
     function closeAchievements() {
@@ -620,6 +737,11 @@
 
     let canvas = document.getElementById('gameCanvas');
     let ctx = canvas.getContext('2d');
+    
+    // Forzado de renderizado fluido y sin pixelado artificial
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
     let bgMusic = document.getElementById('bg-music');
 
     let grid = [];
@@ -668,27 +790,63 @@
         }
     }
 
-    function getScores() {
-        let scores = localStorage.getItem('hat_again_scores');
-        return scores ? JSON.parse(scores) : [
-            { name: "HatMaster", score: 450 },
-            { name: "Player1", score: 320 },
-            { name: "DotsPro", score: 210 }
-        ];
+    async function getScores() {
+        try {
+            let res = await fetch(DB_API_URL + '/latest');
+            let data = await res.json();
+            return data.record || [];
+        } catch (e) {
+            let local = localStorage.getItem('hat_again_scores');
+            return local ? JSON.parse(local) : [
+                { name: "HatMaster", score: 450 },
+                { name: "Player1", score: 320 },
+                { name: "DotsPro", score: 210 }
+            ];
+        }
     }
 
-    function saveScore(name, newScore) {
-        let scores = getScores();
-        scores.push({ name: name, score: newScore });
-        scores.sort((a, b) => b.score - a.score);
-        scores = scores.slice(0, 10);
-        localStorage.setItem('hat_again_scores', JSON.stringify(scores));
+    async function checkAndSaveHighScore(newScore) {
+        let personalBest = parseInt(localStorage.getItem('hat_again_personal_best') || '0');
+        if (newScore > personalBest) {
+            localStorage.setItem('hat_again_personal_best', newScore);
+            
+            let playerName = localStorage.getItem('hat_again_player_name');
+            if (!playerName || playerName === 'Jugador') {
+                playerName = prompt("¡Nuevo Récord Global! Introduce tu nombre:", "Jugador") || "Jugador";
+                localStorage.setItem('hat_again_player_name', playerName);
+            }
+
+            let scores = await getScores();
+            scores.push({ name: playerName, score: newScore });
+            scores.sort((a, b) => b.score - a.score);
+            scores = scores.slice(0, 50);
+
+            localStorage.setItem('hat_again_scores', JSON.stringify(scores));
+
+            try {
+                await fetch(DB_API_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(scores)
+                });
+            } catch (err) {
+                console.log("Servidor local mode active.");
+            }
+
+            alert(`🎉 ¡FELICIDADES! Has actualizado el récord global con ${newScore} puntos.`);
+        }
     }
 
-    function showLeaderboard() {
-        let scores = getScores();
+    async function showLeaderboard() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('leaderboard-screen').classList.remove('hidden');
+        
         let container = document.getElementById('leaderboard-container');
+        container.innerHTML = '<div style="padding: 20px; color: #a097d1;">Cargando récords mundiales...</div>';
+        
+        let scores = await getScores();
         container.innerHTML = '';
+        
         scores.forEach((item, index) => {
             let row = document.createElement('div');
             row.className = 'leaderboard-item';
@@ -699,23 +857,11 @@
             `;
             container.appendChild(row);
         });
-        document.getElementById('start-screen').classList.add('hidden');
-        document.getElementById('leaderboard-screen').classList.remove('hidden');
     }
 
     function closeLeaderboard() {
         document.getElementById('leaderboard-screen').classList.add('hidden');
         document.getElementById('start-screen').classList.remove('hidden');
-    }
-
-    function saveScorePrompt() {
-        let playerName = prompt("Introduce tu nombre:", "Jugador");
-        if (playerName) {
-            saveScore(playerName, score);
-            alert("¡Récord guardado!");
-            showLeaderboard();
-            document.getElementById('gameover-screen').classList.add('hidden');
-        }
     }
 
     function initGrid() {
@@ -737,6 +883,7 @@
     }
 
     function startGame() {
+        newlyUnlockedThisGame = [];
         setupActiveHats();
         score = 0;
         timeLeft = 30;
@@ -952,10 +1099,8 @@
             selectedChain.forEach(item => toEliminate.add(`${item.r},${item.c}`));
 
             let expanded = new Set(toEliminate);
-            let loopsMade = 0;
 
             if (isLoopClosed) {
-                loopsMade = 1;
                 for (let r = 0; r < GRID_SIZE; r++) {
                     for (let c = 0; c < GRID_SIZE; c++) {
                         if (grid[r][c] && grid[r][c].id === hatTypeId) {
@@ -996,7 +1141,7 @@
             score += toEliminate.size;
             document.getElementById('score').innerText = score;
 
-            checkAchievements(score, loopsMade);
+            checkAchievements(score);
 
             toEliminate.forEach(pos => {
                 let [r, c] = pos.split(',').map(Number);
@@ -1041,8 +1186,28 @@
         bgMusic.pause();
         document.getElementById('final-score').innerText = score;
         
-        let unlockedCount = getUnlockedIds().length;
-        document.getElementById('gameover-achievements-text').innerText = `🏆 Logros desbloqueados: ${unlockedCount} / ${ALL_CHARACTERS.length}`;
+        checkAndSaveHighScore(score);
+        
+        let newAchContainer = document.getElementById('gameover-new-achievements');
+        let newAchTitle = document.getElementById('gameover-achievements-title');
+        newAchContainer.innerHTML = '';
+
+        if (newlyUnlockedThisGame.length > 0) {
+            newAchTitle.style.display = 'flex';
+            newAchContainer.style.display = 'flex';
+            newlyUnlockedThisGame.forEach(char => {
+                let badge = document.createElement('div');
+                badge.className = 'new-badge';
+                badge.innerHTML = `
+                    <img src="${char.src}" alt="${char.name}">
+                    <span>${char.name}</span>
+                `;
+                newAchContainer.appendChild(badge);
+            });
+        } else {
+            newAchTitle.style.display = 'none';
+            newAchContainer.style.display = 'none';
+        }
         
         document.getElementById('gameover-screen').classList.remove('hidden');
     }
